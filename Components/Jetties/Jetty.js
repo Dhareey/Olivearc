@@ -3,7 +3,7 @@ import ibasaPano from "../Panos/ibasaPano";
 
 const jettyConfig = {
     "oreta-water-jetty": etegbinPano,
-    "cms-jetty": ibasaPano,
+    "ibasa-jetty": ibasaPano,
     
 
 };
