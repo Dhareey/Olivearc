@@ -3,8 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import icon from 'leaflet/dist/images/marker-icon.png';
+import { useEffect, useRef } from "react";
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const jettyData = {
@@ -93,9 +92,9 @@ const digitalTwinJettyIcon = new L.Icon({
 });
 
 const regularJettyIcon = new L.Icon({
-    iconUrl: "/boat5.png",
+    iconUrl: "/boat7.png",
     shadowUrl: iconShadow,
-    iconSize: [25, 25],
+    iconSize: [20, 20],
   });
 
 
@@ -103,6 +102,17 @@ const regularJettyIcon = new L.Icon({
 
 export default function MapComponent() {
     const router = useRouter();
+    const mapRef = useRef(null);
+
+    useEffect(() => {
+      return () => {
+        if (mapRef.current) {
+            mapRef.current.remove(); // Clean up the map instance on unmount
+            mapRef.current = null; // Clear the ref
+        }
+    };
+
+    }, []);
 
   return (
     <MapContainer center={[6.5244, 3.3792]} zoom={12} style={{ height: '100vh', width: '100%' }}>
