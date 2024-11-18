@@ -1,4 +1,6 @@
 "use client";
+export const dynamicRendering = "force-dynamic";
+
 import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Head from 'next/head';
@@ -11,7 +13,7 @@ const DynamicPano = dynamic(() => import("../../../../Components/Panellum/page")
 })
 
 const JettyPage = () => {
-    const pathname = usePathname();
+    const pathname = usePathname() || "";
     const router = useRouter();
     const jettyname = pathname.replace("/Jetty/", "");
 
