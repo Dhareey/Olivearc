@@ -3,10 +3,11 @@ import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import JettyPano from '../../../../Components/Panellum/page';
+
 
 const DynamicPano = dynamic(() => import("../../../../Components/Panellum/page"),{
     ssr: false,
+    loading: () => <p>Loading...</p>
 })
 
 const JettyPage = () => {
