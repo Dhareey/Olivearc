@@ -13,38 +13,40 @@ const JettyPage = () => {
     const pannellumViewer = useRef(null);
 
     useEffect(() => {
-        // Dynamically load the Pannellum script
-        const loadPannellumScript = () => {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement("script");
-                script.src = "https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js";
-                script.async = true;
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
-        };
-
-        // Load Pannellum and then initialize the viewer
-        loadPannellumScript()
-            .then(() => {
-                if (window.pannellum) {
-                    pannellumViewer.current= window.pannellum.viewer(pannellumContainer.current, jettyPanorama);
-                } else {
-                    console.error("Pannellum failed to load.");
-                }
-            })
-            .catch((error) => console.error("Error loading Pannellum script:", error));
-
-            //Clean panorama
-            return() => {
+        if (typeof window !== 'undefined') {
+            // Dynamically load the Pannellum script
+            const loadPannellumScript = () => {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement("script");
+                    script.src = "https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js";
+                    script.async = true;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            };
+    
+            // Load Pannellum and then initialize the viewer
+            loadPannellumScript()
+                .then(() => {
+                    if (window.pannellum) {
+                        pannellumViewer.current = window.pannellum.viewer(pannellumContainer.current, jettyPanorama);
+                    } else {
+                        console.error("Pannellum failed to load.");
+                    }
+                })
+                .catch((error) => console.error("Error loading Pannellum script:", error));
+    
+            // Clean panorama
+            return () => {
                 if (pannellumViewer.current) {
                     pannellumViewer.current.destroy(); // Destroy pannellum viewer instance
                     pannellumViewer.current = null;
                 }
-
-            }
+            };
+        }
     }, [jettyPanorama]);
+    
 
     return (
         <>
@@ -79,7 +81,9 @@ const JettyPage = () => {
                 overflow: 'hidden' 
             }}
             >
-                {/* This is where the panorama will be displayed */}
+                {typeof window !== 'undefined' && (
+                <div> {/* Panorama content goes here */} </div>
+                )}
             </div>
         </>
     );
