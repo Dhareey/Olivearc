@@ -2,18 +2,25 @@
 import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Head from 'next/head';
-import jettyConfig from '../../../../Components/Jetties/Jetty';
 
 const JettyPage = () => {
     const pathname = usePathname();
     const router = useRouter();
     const jettyname = pathname.replace("/Jetty/", "");
     const pannellumContainer = useRef(null);
-    const jettyPanorama = jettyConfig[jettyname];
     const pannellumViewer = useRef(null);
+    const [jettyPanorama, setJettyPanorama] = useState(null);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
+            import('../../../../Components/Jetties/Jetty')
+                .then((module) => {
+                    const jettyConfig = module.default;
+                    setJettyPanorama(jettyConfig[jettyname]);
+                })
+                .catch((error) => console.error("Error loading jetty configuration:", error));
+
+
             // Dynamically load the Pannellum script
             const loadPannellumScript = () => {
                 return new Promise((resolve, reject) => {
